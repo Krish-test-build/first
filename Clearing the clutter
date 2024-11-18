@@ -1,0 +1,234 @@
+##Program to clear the clutter inside a folder on your computer.
+##1.png all the way till n.png where n is the number of png files in that folder. Do the same for other file formats.
+
+
+
+import os
+import sys
+import PyPDF2
+a=input("import files :")
+if a=='y':
+    from File_creation import create
+
+    create()
+
+##C:/Users/pc/OneDrive/Desktop/Krish Python/Extra/OS Module/Clearing the Clutter
+
+
+
+main=int(input("1: Create Folders, 2: Merge PDF Files, 3:Rename, 4:Exit :"))
+#Giving the User options about the Program
+
+
+if main==1:
+    print("Enter the Location where you want your Files to Be Sorted")
+    file= input("Copy the Location from The file Explorer and Paste it here :")
+    #Location Where the folders are to be created + where the Files are stored
+    
+    path=r"{}".format(file)
+    os.chdir(path)
+    if not os.path.exists('Image'):
+        os.makedirs('Image')
+    if not os.path.exists('Docs'):
+        os.makedirs('Docs')
+    if not os.path.exists('Media'):
+        os.makedirs('Media')
+    if not os.path.exists('Others'):
+        os.makedirs('Others')
+
+    #Creating Folders Named Image, Docs, Media and Others
+        
+    imgext= [".png",".jpg",".jpeg",".gif"]
+    images= [file for file in os.listdir(path) if os.path.splitext(file)[1].lower() in imgext]
+    for image in images:
+        os.replace(image,f"Image/{image}")
+    #Selecting all possible commonly used Image extentions
+    
+    docext=[".doc",".docx",".txt",".pdf",".ppt",".pptx"]
+    docs= [file for file in os.listdir(path) if os.path.splitext(file)[1].lower() in docext]
+    for doc in docs:
+        os.replace(doc,f"Docs/{doc}")
+    #Selecting all possible commonly used Document extentions
+        
+    mediaext=[".zip",".exe",".mp3",".7z"]
+    medias= [file for file in os.listdir(path) if os.path.splitext(file)[1].lower() in mediaext]
+    for media in medias:
+        os.replace(media,f"Media/{media}")
+    #Selecting all possible commonly used Media extentions
+        
+    for file in os.listdir(path):
+        other=os.path.splitext(file)[1].lower()
+        if (other not in imgext) and (other not in docext) and (other not in mediaext) and os.path.isfile(file):
+            for othe in other:
+                os.replace(othe,f"Others/")
+    #The Files that dont Fit any Requirements Go to Others Folder
+
+
+    print("Done Sorting")
+
+
+#Option 2 To Merge N number of different PDFs   
+elif main==2:
+    file= input("Copy the Location of the folder where both files are from The file Explorer and Paste it here :")
+    
+    #User inputs number of files to merge and asked to Give the File Names
+    
+    path=r"{}".format(file)
+    os.chdir(path)
+    merger=PyPDF2.PdfMerger()
+    n=int(input("Enter How Many PDFs U want to merge :"))
+    List=[]
+    for i in range(n):
+        file_name=input("Enter PDF File Name without extension:")
+        file_name+=".pdf"
+        List.append(file_name)
+    for file in List:
+        merger.append(file)
+    merger.write("Merged File.pdf ")
+    #The Merged File is Created and and stored with the other Files
+
+#Option 3: Only for Renaming files from 1-n in alphabetical order 
+elif main==3:
+    i=1
+    location=input("Please Enter the Folder Location :")
+    newpath=r"{}".format(location)
+    os.chdir(newpath)
+    file_type=input("Enter File Format eg txt,pdf, etc :")
+    file_type = '.' +file_type
+    for file in os.listdir(newpath):
+        if file.endswith(str(file_type)):
+            if os.path.isfile(i)=='True':
+                i=i+1
+                pass
+            else:
+                b =  str(i) + str(file_type)
+                os.rename(newpath+"\\"+file,newpath+"\\"+b)
+                i=int(i)
+                i=i+1
+                
+#Shutting Off the Program  
+elif main==4:
+    sys.exit()
+
+
+
+
+#Renaming Files from 1-X If User Requires To do So
+while True:
+    rename= input("Would You like to rename any type of files in order? y/n :")
+    if rename in 'Yy':
+        i=1
+        location=input("Please Enter the Folder Location :")
+        newpath=r"{}".format(location)
+        os.chdir(newpath)
+        file_type=input("Enter File Format eg txt,pdf, etc :")
+        file_type = '.' +file_type
+        for file in os.listdir(newpath):
+            if file.endswith(str(file_type)):
+                if os.path.isfile(i)=='True':
+                    i=i+1
+                    pass
+                else:
+                    b =  str(i) + str(file_type)
+                    os.rename(newpath+"\\"+file,newpath+"\\"+b)
+                    i=int(i)
+                    i=i+1
+        print("Done Renaming")
+    elif rename in 'nN':
+        break
+    else:
+        raise ValueError("Enter only Y or N")
+
+        
+        break
+
+
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+a=int(input("Select 1:png files, 2:jpg files, 3:jpeg files, 4:txt files, 5:pdf files, 6:Exit :"))
+
+
+for file in os.listdir(newpath):
+    if a==1:
+        i=1
+        file_type='.png'
+        for file in os.listdir(newpath):
+            if file.endswith(str(file_type)):
+                if os.path.isfile(i)=='True':
+                    i=i+1
+                    pass
+                else:
+                    b =  str(i) + str(file_type)
+                    os.rename(newpath+"\\"+file,newpath+"\\"+b)
+                    i=int(i)
+                    i=i+1
+    elif a==2:
+        i=1
+        for file in os.listdir(path):
+            if file.endswith(".jpg"):
+                if os.path.isfile(1)=='True':
+                    print("already Done")
+                    break
+                else:
+                    b =  str(i) + '.jpg'
+                    os.rename(path+"/"+file,path+"/"+b)
+                    i=int(i)
+                    i=i+1
+    elif a==3:
+        i=1
+        for file in os.listdir(path):
+            if file.endswith(".jpeg"):
+                if os.path.isfile(1)=='True':
+                    print("already Done")
+                    break
+                else:
+                    b =  str(i) + '.jpeg'
+                    os.rename(path+"/"+file,path+"/"+b)
+                    i=int(i)
+                    i=i+1
+    elif a==4:
+        i=1
+        for file in os.listdir(path):
+            if file.endswith(".txt"):
+                if os.path.isfile(1)=='True':
+                    print("already Done")
+                    break
+                else:
+                    b =  str(i) + '.txt'
+                    os.rename(path+"/"+file,path+"/"+b)
+                    i=int(i)
+                    i=i+1
+    elif a==5:
+        i=1
+        for file in os.listdir(path):
+            if file.endswith(".pdf"):
+                if os.path.isfile(1)=='True':
+                    print("already Done")
+                    break
+                else:
+                    b =  str(i) + '.pdf'
+                    os.rename(path+"/"+file,path+"/"+b)
+                    i=int(i)
+                    i=i+1
+    elif a==6:
+        break
+
+    print("done")       
+    break   
+
+'''
