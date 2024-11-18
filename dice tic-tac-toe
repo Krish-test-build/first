@@ -1,0 +1,146 @@
+#CREATING DICE TIC TAC TOE: U WILL SPIN DICE 2 TIMES 1st for X 2nd for O
+#ONE WHITH HIGHEST ROLL GOES 1st
+
+import random
+import time
+def Main(Values):
+    # Creating an interface matching to the tic tac toe to make it more closer to real
+    print(f" {Values[0]} | {Values[1]} | {Values[2]} ")
+    print(f"---|---|---")
+    print(f" {Values[3]} | {Values[4]} | {Values[5]} ")
+    print(f"---|---|---")
+    print(f" {Values[6]} | {Values[7]} | {Values[8]} ")
+
+def checkWin(Values):
+    # All Possible Patterns
+    Patterns = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+
+    for Pattern in Patterns:
+        #If 1st,2nd,3rd index of any pattern matches the list of all patterns,
+        # X wins and the game will end
+        if(Values[Pattern[0]] == Values[Pattern[1]] == Values[Pattern[2]] =='X'):
+            Main(Values)
+            print("X has Won the Game")
+            return 1
+           
+
+        #Similarly with O
+        if(Values[Pattern[0]] == Values[Pattern[1]] == Values[Pattern[2]] == 'O'):
+            Main(Values)
+            print("O Won the match")
+            return 0
+    #incase of draw
+    return -1
+
+#Dice Funct that will Decide whether X or O will go First
+def DICE():
+    print("Rolling for X",end='')
+    time.sleep(0.99)
+    print(".",end='')
+    time.sleep(0.99)
+    print(".",end='')
+    time.sleep(0.99)
+    print(".",end='')
+    time.sleep(0.99)
+    a=random.randint(1,6)
+    if a>0 and a<=4:
+        print(f"  You've Rolled a {a}")
+    elif a>4 and a<7:
+        print(f" Nice You've Rolled a {a}")
+    
+
+    print("Rolling for O",end='')
+    time.sleep(0.8)
+    print(".",end='')
+    time.sleep(0.8)
+    print(".",end='')
+    time.sleep(0.8)
+    print(".",end='')
+    time.sleep(0.8)
+    b=random.randint(1,6)
+    if b>0 and b<=4:
+        print(f" You've Rolled a {b}")
+    elif b>4 and b<7:
+        print(f" Nice You've Rolled a {b}")
+
+    if a>b:
+        return 1
+    elif a==b:
+        return 27
+    else:
+        return 0
+    
+
+#Starting of the Program       
+if __name__ == '__main__':
+    print("Welcome to the Game")
+    time.sleep(1)
+    print("Your Turn Will Be Selected by a Dice.")
+    time.sleep(0.8)
+    print("The One With Highest Roll Goes 1st")
+    time.sleep(0.8)
+    Values=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+    chance=DICE()
+    while True:
+        if chance ==27:
+            print("Oops same Number, rolling again")
+            chance=DICE()
+        else:
+            break
+    number_of_turns=0
+    
+    while True:
+        try:
+            #X's Chance
+            if chance ==1:
+                time.sleep(0.5)
+                Main(Values)
+                print("X's Turn To Play")
+                value=int(input("Enter The Number To Place the X :"))
+                checkWin(Values)
+
+                #Checking whether the place is Filled or not
+                if type(Values[value])==int:
+                    Values[value] = 'X'
+                else:
+                    print("\nPlease Enter Different Location for X")
+                    continue
+            #O's Chance    
+            elif chance ==0:
+                time.sleep(0.5)
+                Main(Values)
+                print("O's Turn To Play")
+                value=int(input("Enter The Number To Place the O :"))
+                checkWin(Values)
+
+                #Checking whether the place is Filled or not
+                if type(Values[value])==int:
+                    Values[value] = 'O'
+                else:
+                    print("\nPlease Enter Different Location for O")
+                    continue
+          
+        except IndexError:
+            # exception if Value is not between 0 to 8 
+            print("\nPlease Enter value from 0 - 8\n")
+            continue
+        finally:
+            number_of_turns+=1
+            
+        # for giving chance to other player
+        chance = 1 - chance
+        cwin = checkWin(Values)
+        # Game Draw
+        if number_of_turns==9:
+            if cwin == 0 or cwin == 1:
+                pass
+            else:
+                time.sleep(0.8)
+                Main(Values)
+                print("Match Draw")
+                break
+        # Match Over
+        if cwin != -1 :
+            time.sleep(0.8)
+            print("Match over")
+            break
